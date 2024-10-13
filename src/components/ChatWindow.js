@@ -43,7 +43,11 @@ const Messages = ({ messages }) => {
         <div className="messages-container">
             {messages.map((message, index) => (
                 <div key={index} className={`message ${message.isSentByUser ? 'sent' : 'received'}`}>
-                    {!message.isSentByUser && (
+                    {message.isSentByUser ? (
+                        <div className="sent-message-container">
+                            <ReactMarkdown>{message.content}</ReactMarkdown>
+                        </div>
+                    ) : (
                         <div className="received-message-icon" style={{ display: 'flex', alignItems: 'center' }}>
                             <img
                                 src={Logo1}
@@ -53,11 +57,6 @@ const Messages = ({ messages }) => {
                             <div className="received-message-container">
                                 <ReactMarkdown remarkPlugins={[remarkGfm]}>{message.content}</ReactMarkdown>
                             </div>
-                        </div>
-                    )}
-                    {message.isSentByUser && (
-                        <div className="sent-message-container">
-                            <ReactMarkdown>{message.content}</ReactMarkdown>
                         </div>
                     )}
                 </div>
@@ -176,8 +175,9 @@ const ChatWindow = () => {
     const fetchMessagesForTopic = async (topic) => {
         try {
             const response = await axios.get(`http://localhost:5000/messages?topic=${topic}`);
+            console.log('Fetched Messages:', response.data); // Debugging: check if all messages are fetched
             if (response.data) {
-                setMessages(response.data); // Update state with all messages for the selected topic
+                setMessages(response.data); // Properly replace the messages state with the fetched history
                 setInitialTopic(topic); // Set the current topic
             }
         } catch (error) {
