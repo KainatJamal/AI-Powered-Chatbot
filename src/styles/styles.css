@@ -19,6 +19,7 @@ body {
     padding: 20px;
     color: #F8F9FA; /* Light Text */
     box-shadow: 3px 0 10px rgba(0, 0, 0, 0.1);
+    overflow-y: auto; /* Enable vertical scrolling */
 }
 
 .sidebar-header {
